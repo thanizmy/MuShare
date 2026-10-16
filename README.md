@@ -59,7 +59,7 @@ API's private address (`API_UPSTREAM`, a `host:port`). Use whichever host you li
 
 | Host | Config | Notes |
 |---|---|---|
-| **Render** | [`render.yaml`](render.yaml) | New > Blueprint. Creates Postgres, a private API service and the public web service, and generates `SECRET_KEY`. |
+| **Render** | [`render.yaml`](render.yaml) | New > Blueprint. Creates Postgres and one free web service ([`Dockerfile.render`](Dockerfile.render): nginx and the API in a single container), and generates `SECRET_KEY`. Fill in the `S3_*` secrets when asked. |
 | **Fly.io** | [`deploy/fly/`](deploy/fly) | Two apps; commands are in each file's header. The API is private at `mushare-api.internal:8000`. |
 | **Vercel** (frontend only) | [`frontend/vercel.json`](frontend/vercel.json) | Replace `YOUR-API-HOST` with where the API runs (it must be reachable over HTTPS). Vercel's rewrite makes `/api` same-origin. |
 

@@ -79,3 +79,10 @@ jobs:
           push: false
           cache-from: type=gha,scope=web
           cache-to: type=gha,scope=web,mode=max
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.render
+          push: false
+          cache-from: type=gha,scope=single
+          cache-to: type=gha,scope=single,mode=max

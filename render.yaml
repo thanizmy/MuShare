@@ -1,4 +1,8 @@
 # Render Blueprint: New > Blueprint, point it at this repo.
+#
+# One free web service runs nginx (frontend + /api proxy) and the API together, built from
+# Dockerfile.render. That avoids Render's paid private services, and the browser only ever
+# talks to one origin, which is what the refresh-token cookie needs.
 databases:
   - name: mushare-db
     plan: free
@@ -6,12 +10,13 @@ databases:
     user: mushare
 
 services:
-  # Private API: only reachable from the web service, never from the internet.
-  - type: pserv
-    name: mushare-api
+  - type: web
+    name: mushare
     runtime: docker
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
+    plan: free
+    dockerfilePath: ./Dockerfile.render
+    dockerContext: .
+    healthCheckPath: /healthz
     envVars:
       - key: ENVIRONMENT
         value: production
@@ -23,15 +28,15 @@ services:
         generateValue: true
       - key: SEED_CATALOG
         value: "true"
-      - key: FORWARDED_ALLOW_IPS
-        value: "*"
       - key: PORT
-        value: "8000"
+        value: "8080"
       # Render's free-tier disks are ephemeral, so uploads go to an S3-compatible bucket
-      # (R2, Backblaze B2, AWS...). Fill these in the dashboard. Without them My Studio uploads
-      # are lost on every deploy.
+      # (Cloudflare R2, Backblaze B2, AWS...). Fill the secrets in the dashboard. Without them
+      # My Studio uploads are lost on every deploy.
       - key: STORAGE_BACKEND
         value: s3
+      - key: S3_REGION
+        value: auto
       - key: S3_BUCKET
         sync: false
       - key: S3_ENDPOINT_URL
@@ -40,20 +45,3 @@ services:
         sync: false
       - key: S3_SECRET_ACCESS_KEY
         sync: false
-
-  # Public site: serves the frontend and proxies /api to the private API, so the browser
-  # only ever talks to one origin (which is what the refresh-token cookie needs).
-  - type: web
-    name: mushare-web
-    runtime: docker
-    dockerfilePath: ./frontend/Dockerfile.prod
-    dockerContext: ./frontend
-    healthCheckPath: /healthz
-    envVars:
-      - key: API_UPSTREAM
-        fromService:
-          type: pserv
-          name: mushare-api
-          property: hostport
-      - key: PORT
-        value: "8080"
