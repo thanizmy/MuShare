@@ -1,0 +1,72 @@
+# Use the proxy's forwarded protocol when there is one (TLS is terminated upstream on
+# hosting platforms), otherwise whatever this connection used.
+map $http_x_forwarded_proto $forwarded_proto {
+    default $http_x_forwarded_proto;
+    ""      $scheme;
+}
+
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+    gzip_min_length 1024;
+
+    # Security headers. The app makes no cross-origin API calls (nginx proxies /api), so
+    # connect-src stays 'self'. Cover art and audio come from https hosts; the font is Google's.
+    # add_header is not inherited into a location that sets its own, so locations that add
+    # headers repeat these via the include below.
+    include /etc/nginx/conf.d/security-headers.inc;
+
+    location = /healthz {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok";
+    }
+
+    # The API, same-origin so the httpOnly refresh cookie just works.
+    location /api/ {
+        proxy_pass http://${API_UPSTREAM};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        # Overwrite, never append: a client-supplied X-Forwarded-For must not be believed,
+        # or the API's per-IP login limit could be dodged by sending a fake one.
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $forwarded_proto;
+        proxy_read_timeout 30s;
+        client_max_body_size 1m;
+    }
+
+    # Studio uploads: audio up to 30 MB plus the form around it, on a slower clock. The API
+    # enforces the real limits; this only has to let a legitimate upload through. Requests
+    # are streamed to the API rather than buffered to disk first.
+    location /api/studio/ {
+        proxy_pass http://${API_UPSTREAM};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $forwarded_proto;
+        proxy_request_buffering off;
+        proxy_read_timeout 120s;
+        proxy_send_timeout 120s;
+        client_max_body_size 40m;
+    }
+
+    # Hashed build output never changes under the same name.
+    location /assets/ {
+        expires 1y;
+        try_files $uri =404;
+    }
+
+    # Single-page app: unknown paths are client-side routes. Never cache the shell.
+    location / {
+        add_header Cache-Control "no-cache" always;
+        include /etc/nginx/conf.d/security-headers.inc;
+        try_files $uri $uri/ /index.html;
+    }
+}

@@ -1,0 +1,20 @@
+# ---- build the static site
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit
+COPY . .
+RUN npm run build
+
+# ---- serve it. Unprivileged nginx listens on 8080 and renders templates/*.template at start.
+FROM nginxinc/nginx-unprivileged:1.27-alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY security-headers.inc /etc/nginx/conf.d/security-headers.inc
+
+# host:port of the API, reachable from this container (a Compose service, a Render private
+# service, a Fly .internal address...).
+ENV API_UPSTREAM=backend:8000
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:8080/healthz >/dev/null || exit 1

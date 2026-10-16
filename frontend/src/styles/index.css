@@ -1,0 +1,163 @@
+@import 'tailwindcss';
+
+/* Design tokens. Each --color-* / --radius-* / --shadow-* / --font-* becomes utility classes
+   (bg-canvas, text-ink-muted, rounded-card, shadow-glass, ...). The page background is named
+   "canvas", not "base", because "text-base" must stay Tailwind's 1rem font size. */
+@theme {
+  --color-canvas: #121212;
+  --color-surface: #181818;
+  --color-elevated: #242424;
+  --color-hover: #2e2e2e;
+  --color-line: rgb(255 255 255 / 0.08);
+
+  --color-accent: #1db954;
+  --color-accent-soft: #1ed760;
+  --color-accent-deep: #0b3d2e;
+
+  --color-ink: #ffffff;
+  --color-ink-muted: #b3b3b3;
+  --color-ink-faint: #6a6a6a;
+
+  --color-danger: #f3727f;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 12px;
+  --radius-control: 8px;
+
+  --shadow-glass: 0 8px 32px rgb(0 0 0 / 0.35);
+  --shadow-glow: 0 0 24px rgb(29 185 84 / 0.35);
+}
+
+/* Heights of the persistent player, shared by the bars and by the content that clears them. */
+:root {
+  --player-height: 5.5rem;
+  --mini-player-height: 4rem;
+}
+
+@utility h-player {
+  height: var(--player-height);
+}
+@utility h-mini-player {
+  height: var(--mini-player-height);
+}
+@utility pb-player {
+  padding-bottom: var(--player-height);
+}
+@utility pb-mini-player {
+  padding-bottom: var(--mini-player-height);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+  }
+
+  /* Tailwind 4 stopped giving buttons a pointer cursor. */
+  button:not(:disabled),
+  [role='button']:not(:disabled),
+  [role='menuitem']:not(:disabled),
+  [role='radio']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    @apply ring-2 ring-accent ring-offset-2 ring-offset-canvas outline-hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Reusable building blocks. */
+@utility glass {
+  @apply border border-line bg-white/5 shadow-glass backdrop-blur-xl;
+}
+
+@utility glass-strong {
+  @apply border border-line bg-canvas/70 shadow-glass backdrop-blur-2xl;
+}
+
+@utility skeleton {
+  @apply animate-pulse rounded-control bg-white/10;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@utility btn-primary {
+  @apply btn bg-accent text-black hover:scale-[1.02] hover:bg-accent-soft;
+}
+
+@utility btn-ghost {
+  @apply btn border border-line text-ink hover:bg-white/10;
+}
+
+@layer components {
+  /* Range inputs (seek bar, volume): thin track filled up to --pct, thumb on hover/focus. */
+  .range {
+    @apply h-4 cursor-pointer appearance-none bg-transparent disabled:cursor-not-allowed disabled:opacity-40;
+    --range-fill: #ffffff;
+  }
+  .range:hover:not(:disabled),
+  .range:focus-visible {
+    --range-fill: #1db954;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      var(--range-fill) var(--pct),
+      rgba(255, 255, 255, 0.2) var(--pct)
+    );
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    margin-top: -4px;
+    border-radius: 9999px;
+    background: #fff;
+    opacity: 0;
+  }
+  .range:hover::-webkit-slider-thumb,
+  .range:focus-visible::-webkit-slider-thumb {
+    opacity: 1;
+  }
+  .range::-moz-range-track {
+    height: 4px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+  .range::-moz-range-progress {
+    height: 4px;
+    border-radius: 9999px;
+    background: var(--range-fill);
+  }
+  .range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: 0;
+    border-radius: 9999px;
+    background: #fff;
+    opacity: 0;
+  }
+  .range:hover::-moz-range-thumb,
+  .range:focus-visible::-moz-range-thumb {
+    opacity: 1;
+  }
+}

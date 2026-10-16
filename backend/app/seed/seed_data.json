@@ -1,0 +1,308 @@
+{
+  "genres": [
+    "Acoustic",
+    "Alternative",
+    "Ambient",
+    "Chill",
+    "Cinematic",
+    "Electronic",
+    "Folk",
+    "Instrumental",
+    "Jazz",
+    "Rock",
+    "Synthwave"
+  ],
+  "artists": [
+    {
+      "key": "nova-drift",
+      "name": "Nova Drift",
+      "bio": "Synth-driven electronic duo painting neon skylines.",
+      "image_url": "https://picsum.photos/seed/mushare-nova-drift/600/600",
+      "albums": [
+        {
+          "key": "neon-horizons",
+          "title": "Neon Horizons",
+          "release_year": 2023,
+          "cover_url": "https://picsum.photos/seed/mushare-neon-horizons/600/600",
+          "tracks": [
+            {
+              "title": "Afterglow",
+              "track_number": 1,
+              "duration_sec": 373,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Electronic",
+                "Synthwave"
+              ]
+            },
+            {
+              "title": "City Lights Fade",
+              "track_number": 2,
+              "duration_sec": 426,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Electronic",
+                "Synthwave"
+              ]
+            },
+            {
+              "title": "Midnight Circuit",
+              "track_number": 3,
+              "duration_sec": 344,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Electronic",
+                "Synthwave"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "static-bloom",
+          "title": "Static Bloom",
+          "release_year": 2024,
+          "cover_url": "https://picsum.photos/seed/mushare-static-bloom/600/600",
+          "tracks": [
+            {
+              "title": "Pulse Garden",
+              "track_number": 1,
+              "duration_sec": 303,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Electronic",
+                "Synthwave"
+              ]
+            },
+            {
+              "title": "Low Orbit",
+              "track_number": 2,
+              "duration_sec": 354,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Electronic",
+                "Synthwave"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "marlow-and-the-tides",
+      "name": "Marlow & the Tides",
+      "bio": "Warm acoustic grooves with a coastal feel.",
+      "image_url": "https://picsum.photos/seed/mushare-marlow-and-the-tides/600/600",
+      "albums": [
+        {
+          "key": "salt-and-sun",
+          "title": "Salt and Sun",
+          "release_year": 2022,
+          "cover_url": "https://picsum.photos/seed/mushare-salt-and-sun/600/600",
+          "tracks": [
+            {
+              "title": "Harbor Morning",
+              "track_number": 1,
+              "duration_sec": 280,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Folk",
+                "Acoustic"
+              ]
+            },
+            {
+              "title": "Driftwood",
+              "track_number": 2,
+              "duration_sec": 421,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Folk",
+                "Acoustic"
+              ]
+            },
+            {
+              "title": "Long Way Home",
+              "track_number": 3,
+              "duration_sec": 325,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Folk",
+                "Acoustic"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "kestrel-run",
+      "name": "Kestrel Run",
+      "bio": "High-energy rock built for open roads.",
+      "image_url": "https://picsum.photos/seed/mushare-kestrel-run/600/600",
+      "albums": [
+        {
+          "key": "open-throttle",
+          "title": "Open Throttle",
+          "release_year": 2021,
+          "cover_url": "https://picsum.photos/seed/mushare-open-throttle/600/600",
+          "tracks": [
+            {
+              "title": "Redline",
+              "track_number": 1,
+              "duration_sec": 389,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Rock",
+                "Alternative"
+              ]
+            },
+            {
+              "title": "Gravel Roads",
+              "track_number": 2,
+              "duration_sec": 527,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Rock",
+                "Alternative"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "luma-vale",
+      "name": "Luma Vale",
+      "bio": "Dreamy downtempo textures for late nights.",
+      "image_url": "https://picsum.photos/seed/mushare-luma-vale/600/600",
+      "albums": [
+        {
+          "key": "soft-static",
+          "title": "Soft Static",
+          "release_year": 2024,
+          "cover_url": "https://picsum.photos/seed/mushare-soft-static/600/600",
+          "tracks": [
+            {
+              "title": "Velvet Hours",
+              "track_number": 1,
+              "duration_sec": 551,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Chill",
+                "Ambient"
+              ]
+            },
+            {
+              "title": "Moon Garden",
+              "track_number": 2,
+              "duration_sec": 514,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Chill",
+                "Ambient"
+              ]
+            },
+            {
+              "title": "Quiet Rooms",
+              "track_number": 3,
+              "duration_sec": 470,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Chill",
+                "Ambient"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "the-gilded-keys",
+      "name": "The Gilded Keys",
+      "bio": "Jazz-inflected piano trio with a modern edge.",
+      "image_url": "https://picsum.photos/seed/mushare-the-gilded-keys/600/600",
+      "albums": [
+        {
+          "key": "blue-room-sessions",
+          "title": "Blue Room Sessions",
+          "release_year": 2020,
+          "cover_url": "https://picsum.photos/seed/mushare-blue-room-sessions/600/600",
+          "tracks": [
+            {
+              "title": "Slow Burn",
+              "track_number": 1,
+              "duration_sec": 516,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Jazz",
+                "Instrumental"
+              ]
+            },
+            {
+              "title": "Corner Table",
+              "track_number": 2,
+              "duration_sec": 438,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Jazz",
+                "Instrumental"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "orion-park",
+      "name": "Orion Park",
+      "bio": "Cinematic instrumentals that build and bloom.",
+      "image_url": "https://picsum.photos/seed/mushare-orion-park/600/600",
+      "albums": [
+        {
+          "key": "horizon-line",
+          "title": "Horizon Line",
+          "release_year": 2025,
+          "cover_url": "https://picsum.photos/seed/mushare-horizon-line/600/600",
+          "tracks": [
+            {
+              "title": "First Light",
+              "track_number": 1,
+              "duration_sec": 483,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Cinematic",
+                "Instrumental"
+              ]
+            },
+            {
+              "title": "Summit",
+              "track_number": 2,
+              "duration_sec": 676,
+              "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3",
+              "preview_start_sec": 45,
+              "genres": [
+                "Cinematic",
+                "Instrumental"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

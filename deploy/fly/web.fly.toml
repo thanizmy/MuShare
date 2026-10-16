@@ -1,0 +1,30 @@
+# Web app (nginx + built frontend). From the repo root:
+#   fly launch --no-deploy --copy-config --config deploy/fly/web.fly.toml
+#   fly deploy --config deploy/fly/web.fly.toml
+app = "mushare-web"
+primary_region = "iad"
+
+[build]
+  dockerfile = "../../frontend/Dockerfile.prod"
+
+[env]
+  # The API app's private address.
+  API_UPSTREAM = "mushare-api.internal:8000"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/healthz"
+    interval = "30s"
+    timeout = "3s"
+    grace_period = "10s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

@@ -1,0 +1,70 @@
+name: mushare
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "127.0.0.1:${DB_HOST_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Optional S3-compatible object store, for trying uploads against real object storage:
+  #   docker compose --profile s3 up -d s3
+  # Endpoint http://127.0.0.1:9000, access key "mushare-dev", secret "mushare-dev-secret".
+  # (Create a bucket first; see the README section "Uploads and storage".)
+  s3:
+    image: chrislusf/seaweedfs:latest
+    profiles: ["s3"]
+    command: server -dir=/data -s3 -s3.port=9000 -s3.config=/etc/seaweedfs/s3.json
+    configs:
+      - source: s3_identities
+        target: /etc/seaweedfs/s3.json
+    ports:
+      - "127.0.0.1:9000:9000"
+    volumes:
+      - s3data:/data
+
+  backend:
+    build: ./backend
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      MEDIA_ROOT: /data/media
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      # Uploaded audio and covers. Without this volume they'd vanish when the container is rebuilt.
+      - media:/data/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    environment:
+      VITE_API_PROXY_TARGET: http://backend:8000
+    ports:
+      - "127.0.0.1:5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  media:
+  s3data:
+
+configs:
+  s3_identities:
+    content: |
+      {"identities":[{"name":"mushare","credentials":[{"accessKey":"mushare-dev","secretKey":"mushare-dev-secret"}],"actions":["Admin","Read","Write","List","Tagging"]}]}

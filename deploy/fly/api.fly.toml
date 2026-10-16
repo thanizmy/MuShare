@@ -1,0 +1,35 @@
+# API app. From the repo root:
+#   fly launch --no-deploy --copy-config --config deploy/fly/api.fly.toml
+#   fly postgres create && fly postgres attach <db-app> --app mushare-api   # sets DATABASE_URL
+#   fly secrets set SECRET_KEY="$(python -c 'import secrets;print(secrets.token_urlsafe(48))')" --app mushare-api
+#   fly deploy --config deploy/fly/api.fly.toml
+app = "mushare-api"
+primary_region = "iad"
+
+[build]
+  dockerfile = "../../backend/Dockerfile"
+
+[env]
+  ENVIRONMENT = "production"
+  PORT = "8000"
+  SEED_CATALOG = "true"
+  # Traffic arrives from the web app over Fly's private network.
+  FORWARDED_ALLOW_IPS = "*"
+  # Uploads need either a Fly volume mounted at /data/media, or an S3-compatible bucket:
+  #   STORAGE_BACKEND = "s3", S3_BUCKET / S3_ENDPOINT_URL here, and the two keys as secrets:
+  #   fly secrets set S3_ACCESS_KEY_ID=... S3_SECRET_ACCESS_KEY=... -c deploy/fly/api.fly.toml
+
+# No [http_service]: the API is not public. The web app reaches it at mushare-api.internal:8000.
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+[checks]
+  [checks.health]
+    type = "http"
+    port = 8000
+    path = "/api/health"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "40s"
